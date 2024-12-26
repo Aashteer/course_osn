@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'package:flutter/services.dart'; // Не забудьте импортировать этот пакет, если еще не сделали это.
+import 'package:course_osn/components/search.dart';
+import 'package:flutter/services.dart'; 
 
-class Supplier {
+class Supplier extends JsonSerializable {
   String name; // Название поставщика
   String address; // Адрес поставщика
   String phone; // Телефон поставщика
@@ -17,7 +18,7 @@ class Supplier {
     required this.accountNumber,
     required this.inn,
   });
-
+  
   // Метод для создания экземпляра Supplier из JSON
   factory Supplier.fromJson(Map<String, dynamic> json) {
     return Supplier(
@@ -31,21 +32,22 @@ class Supplier {
   }
 
   // Метод для загрузки списка поставщиков из JSON файла
-  static Future<List<Supplier>> loadSuppliersFromDatabase() async {
+ static Future<List<Supplier>> loadSuppliersFromDatabase() async {
     try {
-      // Загружаем содержимое файла JSON
-      final String response = await rootBundle.loadString('assets/suppliers.json');
-      final Map<String, dynamic> decodedJson = jsonDecode(response);
-      List<dynamic> suppliersJson = decodedJson['suppliers'];
-
-      // Создаем список объектов Supplier из JSON
-      List<Supplier> suppliers = suppliersJson
+      final String jsonString = await rootBundle.loadString('assets/supplier.json');
+      final Map<String, dynamic> json = jsonDecode(jsonString);
+      return (json['suppliers'] as List)
           .map((supplierJson) => Supplier.fromJson(supplierJson))
           .toList();
-
-      return suppliers;
     } catch (e) {
-      throw Exception('Ошибка при загрузке данных поставщиков: $e');
+      throw Exception('Ошибка при загрузке поставщиков: $e');
     }
   }
+  
+  @override
+  Map<String, dynamic> toJson() {
+    // TODO: implement toJson
+    throw UnimplementedError();
+  }
+  
 }

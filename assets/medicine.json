@@ -9,7 +9,7 @@
         "manufacturer": "Производитель 1",
         "packagingType": "Пластиковая упаковка",
         "price": 100.0,
-        "suppliers": [],
+        "suppliers": ["Поставщик 1"],
         "invoices": []
       },
       {
