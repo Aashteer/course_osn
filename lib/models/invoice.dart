@@ -10,6 +10,16 @@ class Invoice {
     required this.arrivalDate,
     required this.medicines,
   });
+  // Method to create an Invoice instance from JSON
+  factory Invoice.fromJson(Map<String, dynamic> json) {
+    return Invoice(
+      invoiceNumber: json['invoiceNumber'],
+      arrivalDate: DateTime.parse(json['arrivalDate']),
+      medicines: (json['medicines'] as List)
+          .map((medicineShipmentJson) => MedicineShipment.fromJson(medicineShipmentJson))
+          .toList(),
+    );
+  }
 }
 
 class MedicineShipment {
@@ -22,4 +32,15 @@ class MedicineShipment {
     required this.quantity,
     required this.price,
   });
+
+  // Method to create an Invoice instance from JSON
+  factory MedicineShipment.fromJson(Map<String, dynamic> json) {
+    return MedicineShipment(
+      price: json['price'],
+      quantity: json['quantity'],
+      medicine: (json['medicine'])
+          .map((medicineShipmentJson) => MedicineShipment.fromJson(medicineShipmentJson))
+          .toList(),
+    );
+  }
 }

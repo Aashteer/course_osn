@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:flutter/services.dart'; // Импортируйте этот пакет
 import 'package:course_osn/models/invoice.dart';
 import 'package:course_osn/models/supplier.dart';
 
@@ -26,48 +28,39 @@ class Medicine {
     required this.invoices,
   });
 
+  // Метод для создания экземпляра Medicine из JSON
+  factory Medicine.fromJson(Map<String, dynamic> json) {
+    return Medicine(
+      name: json['name'],
+      category: json['category'],
+      productionDate: DateTime.parse(json['productionDate']),
+      expirationDate: DateTime.parse(json['expirationDate']),
+      registrationNumber: json['registrationNumber'],
+      manufacturer: json['manufacturer'],
+      packagingType: json['packagingType'],
+      price: json['price'].toDouble(),
+      suppliers: (json['suppliers'] as List)
+          .map((supplierJson) => Supplier.fromJson(supplierJson))
+          .toList(),
+      invoices: (json['invoices'] as List)
+          .map((invoiceJson) => Invoice.fromJson(invoiceJson))
+          .toList(),
+    );
+  }
+
   static Future<List<Medicine>> loadMedicinesFromDatabase() async {
     try {
-      // Создаем пример объекта Medicine
-      Medicine medicine = Medicine(
-        name: 'Парацетамол',
-        category: 'Обезболивающее',
-        productionDate: DateTime(2022, 1, 1),
-        expirationDate: DateTime(2025, 1, 1),
-        registrationNumber: '12345',
-        manufacturer: 'Производитель 1',
-        packagingType: 'Пластиковая упаковка',
-        price: 100.0,
-        suppliers: [
-          Supplier(
-            name: 'Поставщик 1',
-            address: 'Москва, ул. Примерная, 10',
-            phone: '+7 123 456 7890',
-            bank: 'Банк 1',
-            accountNumber: '1234567890123456',
-            inn: '1234567890',
-          ),
-        ],
-        invoices: [],
-      );
+      // Загружаем содержимое файла JSON
+      final String response = await rootBundle.loadString('assets/medicine.json');
+      final Map<String, dynamic> decodedJson = jsonDecode(response);
+      List<dynamic> medicinesJson = decodedJson['medicines'];
 
-      // Создаем объект MedicineShipment с объектом Medicine
-      MedicineShipment shipment = MedicineShipment(
-        medicine: medicine,
-        quantity: 100,
-        price: 100.0,
-      );
+      // Создаем список объектов Medicine из JSON
+      List<Medicine> medicines = medicinesJson
+          .map((medicineJson) => Medicine.fromJson(medicineJson))
+          .toList();
 
-      // Создаем объект Invoice с данным MedicineShipment
-      Invoice invoice = Invoice(
-        invoiceNumber: 'INV123456',
-        arrivalDate: DateTime(2024, 5, 1),
-        medicines: [shipment],
-      );
-
-      return [
-        medicine.copyWith(invoices: [invoice]), // Возвращаем список с одним объектом medicine
-      ];
+      return medicines;
     } catch (e) {
       throw Exception('Ошибка при загрузке данных: $e');
     }
