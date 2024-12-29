@@ -64,7 +64,7 @@ class MedicineShipment {
   MedicineShipment({
     required this.medicine,
     required this.quantity,
-    required this.price,
+    required this.price, required String medicineName,
   });
 
   // Method to create an Invoice instance from JSON
@@ -74,7 +74,7 @@ class MedicineShipment {
       quantity: json['quantity'],
       medicine: (json['medicine'])
           .map((medicineShipmentJson) => MedicineShipment.fromJson(medicineShipmentJson))
-          .toList(),
+          .toList(), medicineName: '',
     );
   }
 }

@@ -44,6 +44,7 @@ class SalesInvoice {
       sellerName: json['sellerName'],
     );
   }
+  
 
   // Метод для загрузки списка счетов-фактур из JSON файла
   static Future<List<SalesInvoice>> loadInvoicesFromDatabase() async {
