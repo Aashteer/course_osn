@@ -19,12 +19,38 @@
         "issueDate": "2025-12-01T10:00:00Z",
         "customer": "Vitalya",
         "medicines": {
-            "medicineName": "Парацетамол",
+            "medicineName": "Ибупрофен",
             "quantity": 2,
             "price": 50.0
           },
         "totalAmount": "10000",
-        "sellerName": "NSTU"
+        "sellerName": "Katonov"
+
+      },
+      {
+        "invoiceNumber": "INV653",
+        "issueDate": "2022-12-01T10:00:00Z",
+        "customer": "Maks",
+        "medicines": {
+            "medicineName": "Сумамед",
+            "quantity": 2,
+            "price": 50.0
+          },
+        "totalAmount": "3000",
+        "sellerName": "Jankov"
+
+      },
+      {
+        "invoiceNumber": "INV982",
+        "issueDate": "2020-12-01T10:00:00Z",
+        "customer": "Sasha",
+        "medicines": {
+            "medicineName": "Арбидол",
+            "quantity": 2,
+            "price": 50.0
+          },
+        "totalAmount": "6000",
+        "sellerName": "Antonov"
 
       }
     ]

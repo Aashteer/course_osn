@@ -9,7 +9,7 @@
         "manufacturer": "Производитель 1",
         "packagingType": "Пластиковая упаковка",
         "price": 100.0,
-        "suppliers": ["Поставщик 1", "Поставщик 2"],
+        "suppliers": ["Поставщик 1"],
         "invoice": "Покупатель 1"
       },
       {
@@ -23,6 +23,30 @@
         "price": 150.0,
         "suppliers": ["Поставщик 2"],
         "invoice": "Покупатель 2"
+      },
+      {
+        "name": "Сумамед",
+        "category": "Антибиотики",
+        "productionDate": "2024-01-01T00:00:00.000Z",
+        "expirationDate": "2025-01-01T00:00:00.000Z",
+        "registrationNumber": "05496",
+        "manufacturer": "Производитель 3",
+        "packagingType": "Пластиковая упаковка",
+        "price": 250.0,
+        "suppliers": ["Поставщик 3"],
+        "invoice": "Покупатель 3"
+      },
+      {
+        "name": "Арбидол",
+        "category": "Противовирусные",
+        "productionDate": "2022-01-01T00:00:00.000Z",
+        "expirationDate": "2027-01-01T00:00:00.000Z",
+        "registrationNumber": "83561",
+        "manufacturer": "Производитель 4",
+        "packagingType": "Пластиковая упаковка",
+        "price": 200.0,
+        "suppliers": ["Поставщик 4"],
+        "invoice": "Покупатель 4"
       }
     ]
   }
