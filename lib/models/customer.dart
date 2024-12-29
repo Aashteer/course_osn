@@ -23,14 +23,24 @@ class Customer {
       inn: json['inn'],
     );
   }
+  
+// Метод для преобразования объекта Customer в JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'address': address,
+      'phone': phone,
+      'inn': inn,
+    };
+  }
 
   // Метод для загрузки списка покупателей из JSON файла
   static Future<List<Customer>> loadCustomersFromDatabase() async {
     try {
       // Загружаем содержимое файла JSON
-      final String response = await rootBundle.loadString('assets/customers.json');
+      final String response = await rootBundle.loadString('assets/customer.json');
       final Map<String, dynamic> decodedJson = jsonDecode(response);
-      List<dynamic> customersJson = decodedJson['customers'];
+      List<dynamic> customersJson = decodedJson['customer'];
 
       // Создаем список объектов Customer из JSON
       List<Customer> customers = customersJson

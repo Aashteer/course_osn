@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:course_osn/models/customer.dart';
+import 'package:course_osn/models/medicine.dart';
+import 'package:course_osn/models/supplier.dart';
 import 'package:flutter/services.dart';
 
 class Consignment{
@@ -10,9 +13,9 @@ class Consignment{
   Consignment({
     required this.number,
     required this.date,
-    required this.medicineList
+    required this.medicineList, Customer? customer, Supplier? supplier, Medicine? medicine, required List<Customer> customers, required List<Supplier> suppliers
   });
-  
+
   Map<String, dynamic> toJson() {
     return {
       'number': number,
@@ -25,7 +28,7 @@ class Consignment{
   return Consignment(
     number: json['number'] ?? 'Не указано',
     date: DateTime.parse(json['date'] ?? DateTime.now().toIso8601String()),
-    medicineList: (json['medicineList'] as List<dynamic>?)?.cast<String>() ?? [], // Пустой список по умолчанию
+    medicineList: (json['medicineList'] as List<dynamic>?)?.cast<String>() ?? [], customers: [], suppliers: [], // Пустой список по умолчанию
   );
 }
 
@@ -44,7 +47,7 @@ class Consignment{
   return Consignment(
     number: 'Не указано', // или любое другое значение по умолчанию
     date: DateTime.now(), // или любое значение по умолчанию
-    medicineList: [], // Пустой список лекарств
+    medicineList: [], customers: [], suppliers: [], // Пустой список лекарств
   );
 }
   static Future<List<Consignment>> loadInvoicesFromDatabase() async {

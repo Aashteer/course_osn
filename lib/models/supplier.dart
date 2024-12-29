@@ -31,22 +31,7 @@ class Supplier extends JsonSerializable {
     );
   }
   
-
-  // Метод для загрузки списка поставщиков из JSON файла
- static Future<List<Supplier>> loadSuppliersFromDatabase() async {
-    try {
-      final String jsonString = await rootBundle.loadString('assets/supplier.json');
-      final Map<String, dynamic> json = jsonDecode(jsonString);
-      return (json['suppliers'] as List)
-          .map((supplierJson) => Supplier.fromJson(supplierJson))
-          .toList();
-    } catch (e) {
-      throw Exception('Ошибка при загрузке поставщиков: $e');
-    }
-  }
-  
-
-  @override
+   // Метод для преобразования объекта Supplier в JSON
   Map<String, dynamic> toJson() {
     return {
       'name': name,
@@ -57,5 +42,27 @@ class Supplier extends JsonSerializable {
       'inn': inn,
     };
   }
-  
+
+  // Метод для загрузки списка поставщиков из JSON файла
+static Future<List<Supplier>> loadSuppliersFromDatabase() async {
+  try {
+    // Загружаем содержимое файла JSON
+    final String jsonString = await rootBundle.loadString('assets/supplier.json');
+    final Map<String, dynamic> decodedJson = jsonDecode(jsonString);
+    
+    // Получаем список поставщиков из JSON
+    List<dynamic> suppliersJson = decodedJson['suppliers'];
+
+    // Создаем список объектов Supplier из JSON
+    List<Supplier> suppliers = suppliersJson
+        .map((supplierJson) => Supplier.fromJson(supplierJson))
+        .toList();
+
+    return suppliers;
+  } catch (e) {
+    throw Exception('Ошибка при загрузке поставщиков: $e');
+  }
 }
+
+}
+

@@ -17,4 +17,12 @@ class MedicineShipment {
       price: json['price'].toDouble(),
     );
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'medicineName': medicineName,
+      'quantity': quantity,
+      'price': price,
+    };
+  }
 }
+
