@@ -9,8 +9,8 @@
         "manufacturer": "Производитель 1",
         "packagingType": "Пластиковая упаковка",
         "price": 100.0,
-        "suppliers": ["Поставщик 1"],
-        "invoices": []
+        "suppliers": ["Поставщик 1", "Поставщик 2"],
+        "invoice": "Покупатель 1"
       },
       {
         "name": "Ибупрофен",
@@ -21,8 +21,8 @@
         "manufacturer": "Производитель 2",
         "packagingType": "Стеклянная упаковка",
         "price": 150.0,
-        "suppliers": [],
-        "invoices": []
+        "suppliers": ["Поставщик 2"],
+        "invoice": "Покупатель 2"
       }
     ]
   }

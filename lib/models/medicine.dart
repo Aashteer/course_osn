@@ -14,7 +14,7 @@ class Medicine {
   String packagingType;
   double price;
   List<Supplier> suppliers;
-  List<Invoice> invoices;
+  String invoice;
 
   Medicine({
     required this.name,
@@ -26,7 +26,7 @@ class Medicine {
     required this.packagingType,
     required this.price,
     required this.suppliers,
-    required this.invoices,
+    required this.invoice,
   });
 
   // Асинхронный фабричный метод
@@ -57,7 +57,7 @@ class Medicine {
       packagingType: json['packagingType'],
       price: json['price'].toDouble(),
       suppliers: foundSuppliers,
-      invoices: [], // Аналогично обрабатываем invoices
+      invoice: json['invoice'], // Аналогично обрабатываем invoices
     );
   }
 

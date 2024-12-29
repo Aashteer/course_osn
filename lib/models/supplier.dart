@@ -44,10 +44,17 @@ class Supplier extends JsonSerializable {
     }
   }
   
+
   @override
   Map<String, dynamic> toJson() {
-    // TODO: implement toJson
-    throw UnimplementedError();
+    return {
+      'name': name,
+      'address': address,
+      'phone': phone,
+      'bank': bank,
+      'accountNumber': accountNumber,
+      'inn': inn,
+    };
   }
   
 }

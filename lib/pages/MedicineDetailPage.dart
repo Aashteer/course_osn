@@ -60,12 +60,28 @@ class MedicineDetailPage extends StatelessWidget {
             ).toList(),
             const Divider(),
             const Text('Приходные накладные', style: TextStyle(fontWeight: FontWeight.bold)),
-            ...medicine.invoices.map(
-              (invoice) => ListTile(
-                title: Text('№ ${invoice.invoiceNumber} от ${invoice.arrivalDate.toLocal().toString().split(' ')[0]}'),
-                subtitle: Text('Количество: ${invoice.medicines.length} на сумму: ₽ ${_calculateTotalInvoiceAmount(invoice)}'),
-              ),
-            ).toList(),
+            FutureBuilder<Invoice>(
+  future: Invoice.findByInvoiceNumber(medicine.invoice), // Ensure this returns Future<Invoice>
+  builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (snapshot.hasError) {
+      return const Center(child: Text('Ошибка при загрузке накладной'));
+    } else if (snapshot.hasData) {
+      final invoice = snapshot.data!;
+      // Check if the invoice is empty by looking for the default values
+      if (invoice.invoiceNumber == 'Не указано') {
+        return const Center(child: Text('Накладная не найдена'));
+      }
+      return ListTile(
+        title: Text('№ ${invoice.invoiceNumber} от ${invoice.arrivalDate.toLocal().toString().split(' ')[0]}'),
+        subtitle: Text('Количество: ${invoice.medicines.length} на сумму: ₽ ${_calculateTotalInvoiceAmount(invoice)}'),
+      );
+    } else {
+      return const Center(child: Text('Накладная не найдена'));
+    }
+  },
+)
           ],
         ),
       ),
