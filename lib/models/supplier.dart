@@ -30,6 +30,7 @@ class Supplier extends JsonSerializable {
       inn: json['inn'],
     );
   }
+  
 
   // Метод для загрузки списка поставщиков из JSON файла
  static Future<List<Supplier>> loadSuppliersFromDatabase() async {

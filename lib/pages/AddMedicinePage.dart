@@ -1,214 +1,65 @@
-import 'package:course_osn/models/medicine.dart';
+import 'dart:io';
+import 'package:course_osn/models/consignment.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
-class AddMedicinePage extends StatefulWidget {
-  final Function(Medicine) onAddMedicine;
-
-  const AddMedicinePage({super.key, required this.onAddMedicine});
+class Addmedicinepage extends StatefulWidget {
+  const Addmedicinepage({super.key});
 
   @override
-  _AddMedicinePageState createState() => _AddMedicinePageState();
+  State<Addmedicinepage> createState() => _AddmedicinepageState();
 }
 
-class _AddMedicinePageState extends State<AddMedicinePage> {
+class _AddmedicinepageState extends State<Addmedicinepage> {
   final _formKey = GlobalKey<FormState>();
-  late String name;
-  late String category;
-  late DateTime productionDate;
-  late DateTime expirationDate;
-  late String registrationNumber;
-  late String manufacturer;
-  late String packagingType;
-  late double price;
-  late String address;
-  late String phone;
-  late String bank;
-  late String accountNumber;
-  late String inn;
-  late String invoiceNumber;
-  late DateTime issueDate;
-  late String customer;
-  late String medicines;
-  late double totalAmount;
-  late String sellerName;
-  late DateTime arrivalDate;
+  final TextEditingController _numberController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _medicineController = TextEditingController();
 
-  // Текущий индекс выбранной секции
-  int _currentSectionIndex = 0;
+  List<String> _medicineList = [];
 
-  // Секция для ввода данных лекарства
-  Widget _medicineSection() {
-    return Column(
-      children: [
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Название лекарства'),
-          onSaved: (value) => name = value!,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Пожалуйста, введите название лекарства';
-            }
-            return null;
-          },
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Категория'),
-          onSaved: (value) => category = value!,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Пожалуйста, введите категорию';
-            }
-            return null;
-          },
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Дата производства'),
-          onSaved: (value) => expirationDate = DateTime.parse(value!),
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Дата истечения срока годности'),
-          onSaved: (value) => productionDate = DateTime.parse(value!),
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Регистрационный номер'),
-          onSaved: (value) => registrationNumber = value!,
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Производитель'),
-          onSaved: (value) => manufacturer = value!,
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Тип упаковки'),
-          onSaved: (value) => packagingType = value!,
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Цена'),
-          keyboardType: TextInputType.number,
-          onSaved: (value) => price = double.parse(value!),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Пожалуйста, введите цену';
-            }
-            return null;
-          },
-        ),
-      ],
-    );
+  Future<void> _saveConsignmentToFile(String json) async {
+    final file = File('assets/consignments.json');
+
+    // Если файл существует, добавляем новый JSON к существующим данным
+    if (await file.exists()) {
+      String existingData = await file.readAsString();
+      List<dynamic> jsonData = jsonDecode(existingData);
+      jsonData.add(jsonDecode(json));
+      await file.writeAsString(jsonEncode(jsonData));
+    } else {
+      // Если файл не существует, создаем новый
+      await file.writeAsString(jsonEncode([jsonDecode(json)]));
+    }
   }
 
-  // Секция для ввода данных поставщика
-  Widget _supplierSection() {
-    return Column(
-      children: [
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Имя поставщика'),
-          onSaved: (value) => name = value!,
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Адрес поставщика'),
-          onSaved: (value) => address = value!,
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Телефон поставщика'),
-          onSaved: (value) => phone = value!,
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Банк поставщика'),
-          onSaved: (value) => bank = value!,
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Номер расчетного счета в банке'),
-          onSaved: (value) => accountNumber = value!,
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'ИНН поставщика'),
-          onSaved: (value) => inn = value!,
-        ),
-      ],
-    );
-  }
+  void _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      final newConsignment = Consignment(
+        number: _numberController.text,
+        date: DateTime.tryParse(_dateController.text) ?? DateTime.now(),
+        medicineList: _medicineList,
+      );
 
-  // Секция для ввода данных приходной накладной
-  Widget _invoiceSection() {
-    return Column(
-      children: [
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Номер приходной накладной ведомости'),
-          onSaved: (value) => invoiceNumber = value!,
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Дата поступления на склад'),
-          onSaved: (value) => arrivalDate = DateTime.parse(value!),
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Список поступивших лекарств'),
-          onSaved: (value) => medicines = value!,
-        ),
-      ],
-    );
-  }
+      // Преобразуем данные в JSON
+      final consignmentJson = jsonEncode(newConsignment.toJson());
+      print('Созданный Consignment: $consignmentJson');
 
-  // Секция для ввода данных покупателя
-  Widget _customerSection() {
-    return Column(
-      children: [
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Название покупателя'),
-          onSaved: (value) => name = value!,
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Адрес покупателя'),
-          onSaved: (value) => address = value!,
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Телефон покупателя'),
-          onSaved: (value) => phone = value!,
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'ИНН покупателя'),
-          onSaved: (value) => inn = value!,
-        ),
-      ],
-    );
-  }
+      // Сохраняем JSON в файл
+      await _saveConsignmentToFile(consignmentJson);
 
-  // Секция для данных счета-фактуры
-  Widget _invoiceDetailsSection() {
-    return Column(
-      children: [
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Номер счета-фактуры'),
-          onSaved: (value) => invoiceNumber = value!,
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Дата выписки счета'),
-          onSaved: (value) => issueDate = DateTime.parse(value!),
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Покупатель'),
-          onSaved: (value) => customer = value!,
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Лекарства, указанные в счете'),
-          onSaved: (value) => medicines = value!,
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Сумма к уплате'),
-          onSaved: (value) => totalAmount = double.parse(value!),
-        ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'Фамилия продавца'),
-          onSaved: (value) => sellerName = value!,
-        ),
-      ],
-    );
+      // Очищаем форму после отправки
+      _formKey.currentState!.reset();
+      _medicineList.clear();
+      setState(() {});
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Добавить лекарство'),
-        backgroundColor: const Color.fromARGB(255, 143, 145, 233),
+        title: const Text('Добавить накладную'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -216,82 +67,78 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
           key: _formKey,
           child: ListView(
             children: [
-              // Кнопки переключения секций
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _currentSectionIndex = 0;  // Секция лекарства
-                      });
-                    },
-                    child: const Text('Лекарство'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _currentSectionIndex = 1;  // Секция поставщика
-                      });
-                    },
-                    child: const Text('Поставщик'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _currentSectionIndex = 2;  // Секция накладной
-                      });
-                    },
-                    child: const Text('Приходная накладная'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _currentSectionIndex = 3;  // Секция покупателя
-                      });
-                    },
-                    child: const Text('Покупатель'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _currentSectionIndex = 4;  // Секция счета
-                      });
-                    },
-                    child: const Text('Счет-фактура'),
-                  ),
-                ],
+              TextFormField(
+                controller: _numberController,
+                decoration: const InputDecoration(
+                  labelText: 'Номер накладной',
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Пожалуйста, введите номер накладной';
+                  }
+                  return null;
+                },
               ),
-
-              // Отображаем текущую секцию в зависимости от выбора
-              if (_currentSectionIndex == 0) _medicineSection(),
-              if (_currentSectionIndex == 1) _supplierSection(),
-              if (_currentSectionIndex == 2) _invoiceSection(),
-              if (_currentSectionIndex == 3) _customerSection(),
-              if (_currentSectionIndex == 4) _invoiceDetailsSection(),
-
-              // Кнопка отправки формы
+              TextFormField(
+                controller: _dateController,
+                decoration: const InputDecoration(
+                  labelText: 'Дата (YYYY-MM-DD)',
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Пожалуйста, введите дату';
+                  }
+                  // Проверка формата даты
+                  if (DateTime.tryParse(value) == null) {
+                    return 'Пожалуйста, введите дату в формате YYYY-MM-DD';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _medicineController,
+                decoration: const InputDecoration(
+                  labelText: 'Лекарство',
+                  hintText: 'Введите название лекарства и нажмите Добавить',
+                ),
+              ),
               ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    final newMedicine = Medicine(
-                      name: name,
-                      category: category,
-                      productionDate: productionDate,
-                      expirationDate: expirationDate,
-                      registrationNumber: registrationNumber,
-                      manufacturer: manufacturer,
-                      packagingType: packagingType,
-                      price: price,
-                      suppliers: [],
-                      invoice: invoiceNumber,
-                    );
-                    widget.onAddMedicine(newMedicine);
-                    Navigator.pop(context);
+                  if (_medicineController.text.isNotEmpty) {
+                    setState(() {
+                      _medicineList.add(_medicineController.text);
+                      _medicineController.clear();
+                    });
                   }
                 },
-                child: const Text('Добавить'),
+                child: const Text('Добавить лекарство'),
+              ),
+              const SizedBox(height: 10),
+              if (_medicineList.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Список лекарств:',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    ..._medicineList.map((medicine) => ListTile(
+                          title: Text(medicine),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              setState(() {
+                                _medicineList.remove(medicine);
+                              });
+                            },
+                          ),
+                        )),
+                  ],
+                ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _submitForm,
+                child: const Text('Сохранить накладную'),
               ),
             ],
           ),

@@ -76,4 +76,8 @@ class Medicine {
       throw Exception('Ошибка при загрузке данных: $e');
     }
   }
+
+  static fromJson(json) {}
+
+  toJson() {}
 }

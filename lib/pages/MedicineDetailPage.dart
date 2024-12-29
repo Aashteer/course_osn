@@ -1,3 +1,5 @@
+
+import 'package:course_osn/models/consignment.dart';
 import 'package:course_osn/models/invoice.dart';
 import 'package:course_osn/models/medicine.dart';
 import 'package:flutter/material.dart';
@@ -60,8 +62,8 @@ class MedicineDetailPage extends StatelessWidget {
             ).toList(),
             const Divider(),
             const Text('Приходные накладные', style: TextStyle(fontWeight: FontWeight.bold)),
-            FutureBuilder<Invoice>(
-  future: Invoice.findByInvoiceNumber(medicine.invoice), // Ensure this returns Future<Invoice>
+            FutureBuilder<Consignment>(
+  future: Consignment.findByInvoiceNumber(medicine.invoice), // Ensure this returns Future<Invoice>
   builder: (context, snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return const Center(child: CircularProgressIndicator());
@@ -70,12 +72,12 @@ class MedicineDetailPage extends StatelessWidget {
     } else if (snapshot.hasData) {
       final invoice = snapshot.data!;
       // Check if the invoice is empty by looking for the default values
-      if (invoice.invoiceNumber == 'Не указано') {
+      if (invoice.number == 'Не указано') {
         return const Center(child: Text('Накладная не найдена'));
       }
       return ListTile(
-        title: Text('№ ${invoice.invoiceNumber} от ${invoice.arrivalDate.toLocal().toString().split(' ')[0]}'),
-        subtitle: Text('Количество: ${invoice.medicines.length} на сумму: ₽ ${_calculateTotalInvoiceAmount(invoice)}'),
+        title: Text('№ ${invoice.number} от ${invoice.date.toLocal().toString().split(' ')[0]}'),
+        subtitle: Text('Количество: ${invoice.medicineList.length}'),
       );
     } else {
       return const Center(child: Text('Накладная не найдена'));
