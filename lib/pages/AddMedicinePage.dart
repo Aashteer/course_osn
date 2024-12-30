@@ -19,6 +19,22 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
   final TextEditingController _numberController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _medicineController = TextEditingController();
+  final TextEditingController _salesInvoiceinvoiceNumberController = TextEditingController();
+  final TextEditingController _salesInvoiceissueDateController = TextEditingController();
+  final TextEditingController _salesInvoicecustomerController = TextEditingController();
+  final TextEditingController _salesInvoicemedicinesController = TextEditingController();
+  final TextEditingController _salesInvoicetotalAmountController = TextEditingController();
+  final TextEditingController _salesInvoicesellerNameController = TextEditingController();
+    final TextEditingController _medicinenameController = TextEditingController();
+final TextEditingController _medicinecategoryController = TextEditingController();
+final TextEditingController _medicineexpirationDateController = TextEditingController();
+final TextEditingController _medicineregistrationNumberController = TextEditingController();
+final TextEditingController _medicinemanufacturerController = TextEditingController();
+final TextEditingController _medicinepackagingTypeController = TextEditingController();
+final TextEditingController _medicinepriceController = TextEditingController();
+
+    final TextEditingController _medicineproductionDateController = TextEditingController();
+
   final TextEditingController _customerNameController = TextEditingController();
   final TextEditingController _supplierNameController = TextEditingController();
   List<String> medicineList = [];
@@ -162,13 +178,35 @@ final TextEditingController _customerAddressController = TextEditingController()
     if (_medicineController.text.isNotEmpty) {
       setState(() {
         medicineList.add(_medicineController.text);
-        _medicineController.clear(); // Очищаем поле ввода после добавления
-      });
+        // Очистка полей ввода
+      _medicinenameController.clear();
+      _medicinecategoryController.clear();
+      _medicineproductionDateController.clear();
+      _medicineexpirationDateController.clear();
+      _medicineregistrationNumberController.clear();
+      _medicinemanufacturerController.clear();
+      _medicinepackagingTypeController.clear();
+      _medicinepriceController.clear();
+      }
+      );
     }
   }
 
-
-
+void _addsalesinvoice() {
+  if (_medicineController.text.isNotEmpty) {
+      setState(() {
+        medicineList.add(_medicineController.text);
+        _salesInvoiceinvoiceNumberController.clear();
+        _salesInvoiceissueDateController.clear();
+        _salesInvoicecustomerController.clear();
+        _salesInvoicemedicinesController.clear();
+        _salesInvoicetotalAmountController.clear();
+        _salesInvoicesellerNameController.clear();
+        }
+      );
+    }
+}
+           
 
   void _submitForm() async {
   if (_formKey.currentState!.validate()) {
@@ -184,6 +222,8 @@ final TextEditingController _customerAddressController = TextEditingController()
     // Получаем путь к файлу JSON
     final consignmentFilePath = 'assets/consignment.json';
     final customerFilePath = 'assets/customer.json';
+    final medicineFilePath = 'assets/medicine.json';
+    final supplierFilePath = 'assets/supplier.json';
 
     // Загружаем существующие накладные
     List<Consignment> existingConsignments = await _loadConsignments(consignmentFilePath);
@@ -266,39 +306,51 @@ final TextEditingController _customerAddressController = TextEditingController()
             child: Column(
               children: [
                 // Поля ввода для данных накладной
+                
+                
+                
+                const SizedBox(height: 20),
+                Text('Список лекарств:'),
                 TextFormField(
-                  controller: _numberController,
-                  decoration: const InputDecoration(labelText: 'Номер накладной'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Пожалуйста, введите номер накладной';
-                    }
-                    return null;
-                  },
+                  controller: _medicinenameController,
+                  decoration: const InputDecoration(labelText: 'Название лекарства'),
                 ),
                 TextFormField(
-                  controller: _dateController,
-                  decoration: const InputDecoration(labelText: 'Дата (YYYY-MM-DD)'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Пожалуйста, введите дату';
-                    }
-                    return null;
-                  },
+                  controller: _medicinecategoryController,
+                  decoration: const InputDecoration(labelText: 'Категория'),
                 ),
                 TextFormField(
-                  controller: _medicineController,
-                  decoration: const InputDecoration(labelText: 'Лекарство'),
+                  controller: _medicineproductionDateController,
+                  decoration: const InputDecoration(labelText: 'Дата производства'),
+                ),
+                TextFormField(
+                  controller: _medicineexpirationDateController,
+                  decoration: const InputDecoration(labelText: 'Дата истечения срока годности'),
+                ),
+                TextFormField(
+                  controller: _medicineregistrationNumberController,
+                  decoration: const InputDecoration(labelText: 'Регистрационный номер'),
+                ),
+                TextFormField(
+                  controller: _medicinemanufacturerController,
+                  decoration: const InputDecoration(labelText: 'Производитель'),
+                ),
+                TextFormField(
+                  controller: _medicinepackagingTypeController,
+                  decoration: const InputDecoration(labelText: 'Тип упаковки'),
+                ),
+                TextFormField(
+                  controller: _medicinepriceController,
+                  decoration: const InputDecoration(labelText: 'Цена'),
                 ),
                 ElevatedButton(
                   onPressed: _addMedicine,
-                  child: const Text('Добавить лекарство'),
+                  child: const Text('Добавить'),
                 ),
-                const SizedBox(height: 20),
-                Text('Список лекарств:'),
-                // Список лекарств...
+                
 
                 // Поля ввода для данных покупателя
+                Text('Покупатель:'),
                 TextFormField(
                   controller: _customerNameController,
                   decoration: const InputDecoration(labelText: 'Имя покупателя'),
@@ -320,10 +372,39 @@ final TextEditingController _customerAddressController = TextEditingController()
                   child: const Text('Добавить покупателя'),
                 ),
                 const SizedBox(height: 20),
-                Text('Список покупателей:'),
+                Text('Счет-фактура:'),
                 // Список покупателей...
+                TextFormField(
+                  controller: _salesInvoiceinvoiceNumberController,
+                  decoration: const InputDecoration(labelText: 'Номер счета-фактуры'),
+                ),
+                TextFormField(
+                  controller: _salesInvoiceissueDateController,
+                  decoration: const InputDecoration(labelText: 'Дата выписки счета'),
+                ),
+                TextFormField(
+                  controller: _salesInvoicecustomerController,
+                  decoration: const InputDecoration(labelText: 'Покупатель'),
+                ),
+                TextFormField(
+                  controller: _salesInvoicemedicinesController,
+                  decoration: const InputDecoration(labelText: 'Лекарства, указанные в счете'),
+                ),
+                TextFormField(
+                  controller: _salesInvoicetotalAmountController,
+                  decoration: const InputDecoration(labelText: 'Сумма к уплате'),
+                ),
+                TextFormField(
+                  controller: _salesInvoicesellerNameController,
+                  decoration: const InputDecoration(labelText: 'Фамилия продавца'),
+                ),
+                ElevatedButton(
+                  onPressed: _addsalesinvoice,
+                  child: const Text('Добавить покупателя'),
+                ),
 
                 // Поля ввода для данных поставщика
+                Text('Поставщики:'),
                 TextFormField(
                   controller: _supplierNameController,
                   decoration: const InputDecoration(labelText: 'Имя поставщика'),
@@ -353,7 +434,6 @@ final TextEditingController _customerAddressController = TextEditingController()
                   child: const Text('Добавить поставщика'),
                 ),
                 const SizedBox(height: 20),
-                Text('Список поставщиков:'),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
@@ -371,6 +451,31 @@ final TextEditingController _customerAddressController = TextEditingController()
                       ),
                     );
                   },
+                ),
+                Text('Приходная приклодная:'),
+                TextFormField(
+                  controller: _numberController,
+                  decoration: const InputDecoration(labelText: 'Номер накладной'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Пожалуйста, введите номер накладной';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _dateController,
+                  decoration: const InputDecoration(labelText: 'Дата (YYYY-MM-DD)'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Пожалуйста, введите дату';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _medicineController,
+                  decoration: const InputDecoration(labelText: 'Лекарство'),
                 ),
 
                 ElevatedButton(
