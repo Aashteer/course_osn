@@ -63,7 +63,7 @@ class MedicineDetailPage extends StatelessWidget {
             const Divider(),
             const Text('Приходные накладные', style: TextStyle(fontWeight: FontWeight.bold)),
             FutureBuilder<Consignment>(
-  future: Consignment.findByInvoiceNumber(medicine.invoice), // Ensure this returns Future<Invoice>
+  future: Consignment.findByInvoiceNumber(medicine.invoice), 
   builder: (context, snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return const Center(child: CircularProgressIndicator());
@@ -71,7 +71,6 @@ class MedicineDetailPage extends StatelessWidget {
       return const Center(child: Text('Ошибка при загрузке накладной'));
     } else if (snapshot.hasData) {
       final invoice = snapshot.data!;
-      // Check if the invoice is empty by looking for the default values
       if (invoice.number == 'Не указано') {
         return const Center(child: Text('Накладная не найдена'));
       }

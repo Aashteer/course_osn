@@ -13,7 +13,7 @@ class Invoice {
     required this.arrivalDate,
     required this.medicines,
   });
-  // Method to create an Invoice instance from JSON
+  // Способ создания экземпляра счета-фактуры из JSON
   factory Invoice.fromJson(Map<String, dynamic> json) {
     return Invoice(
       invoiceNumber: json['invoiceNumber'],
@@ -35,11 +35,11 @@ class Invoice {
     }
   }
   
-  // Возвращаем пустой экземпляр Invoice, если не нашли
+  // Возвращаем пустой экземпляр Invoice
   return Invoice(
-    invoiceNumber: 'Не указано', // или любое другое значение по умолчанию
-    arrivalDate: DateTime.now(), // или любое значение по умолчанию
-    medicines: [], // Пустой список лекарств
+    invoiceNumber: 'Не указано', 
+    arrivalDate: DateTime.now(), 
+    medicines: [], 
   );
 }
   static Future<List<Invoice>> loadInvoicesFromDatabase() async {
@@ -67,7 +67,7 @@ class MedicineShipment {
     required this.price, required String medicineName,
   });
 
-  // Method to create an Invoice instance from JSON
+  // Способ создания экземпляра счета-фактуры из JSON
   factory MedicineShipment.fromJson(Map<String, dynamic> json) {
     return MedicineShipment(
       price: json['price'],

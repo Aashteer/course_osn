@@ -43,11 +43,11 @@ class Consignment{
     }
   }
   
-  // Возвращаем пустой экземпляр Invoice, если не нашли
+  // Возвращаем пустой экземпляр Invoice (по умолчанию)
   return Consignment(
-    number: 'Не указано', // или любое другое значение по умолчанию
-    date: DateTime.now(), // или любое значение по умолчанию
-    medicineList: [], customers: [], suppliers: [], // Пустой список лекарств
+    number: 'Не указано', 
+    date: DateTime.now(), 
+    medicineList: [], customers: [], suppliers: [], 
   );
 }
   static Future<List<Consignment>> loadInvoicesFromDatabase() async {

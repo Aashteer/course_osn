@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:flutter/services.dart'; // Импортируйте этот пакет
-import 'package:course_osn/components/search.dart'; // Предположим, Fuilter находится здесь
-import 'package:course_osn/models/invoice.dart'; // Импорт модели Invoice
-import 'package:course_osn/models/supplier.dart'; // Импорт модели Supplier
+import 'package:flutter/services.dart'; 
+import 'package:course_osn/components/search.dart'; 
+import 'package:course_osn/models/invoice.dart'; 
+import 'package:course_osn/models/supplier.dart'; 
 
 class Medicine {
   String name;

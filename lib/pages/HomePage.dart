@@ -182,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AddMedicinePage(), // Исправлено на правильное имя класса
+                    builder: (context) => AddMedicinePage(),
                   ),
                 );
               },

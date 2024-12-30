@@ -219,6 +219,7 @@ void _addsalesinvoice() {
       suppliers: supplierList,
     );
 
+
     // Получаем путь к файлу JSON
     final consignmentFilePath = 'assets/consignment.json';
     final customerFilePath = 'assets/customer.json';
@@ -305,10 +306,7 @@ void _addsalesinvoice() {
             key: _formKey,
             child: Column(
               children: [
-                // Поля ввода для данных накладной
-                
-                
-                
+                // Поля ввода для данных лекарств
                 const SizedBox(height: 20),
                 Text('Список лекарств:'),
                 TextFormField(
@@ -373,7 +371,7 @@ void _addsalesinvoice() {
                 ),
                 const SizedBox(height: 20),
                 Text('Счет-фактура:'),
-                // Список покупателей...
+
                 TextFormField(
                   controller: _salesInvoiceinvoiceNumberController,
                   decoration: const InputDecoration(labelText: 'Номер счета-фактуры'),

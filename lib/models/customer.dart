@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:flutter/services.dart'; // Не забудьте импортировать этот пакет, если еще не сделали это.
+import 'package:flutter/services.dart'; 
 
 class Customer {
   String name;       // Название покупателя
