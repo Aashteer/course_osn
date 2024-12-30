@@ -4,6 +4,8 @@ import 'package:course_osn/components/search.dart';
 import 'package:course_osn/models/invoice.dart'; 
 import 'package:course_osn/models/supplier.dart'; 
 
+
+//Класс Medicine предназначен для представления данных о лекарствах, включая загрузку из JSON и асинхронную обработку поставщиков, связанных с каждым лекарством.
 class Medicine {
   String name;
   String category;
@@ -29,7 +31,7 @@ class Medicine {
     required this.invoice,
   });
 
-  // Асинхронный фабричный метод
+  // Асинхронный фабричный метод. Загружает всех поставщиков, обрабатывает массив строк suppliers из JSON и находит соответствующие объекты Supplier с помощью фильтрации.
   static Future<Medicine> fromJsonAsync(Map<String, dynamic> json) async {
     // Загружаем всех поставщиков
     List<Supplier> allSuppliers = await Supplier.loadSuppliersFromDatabase();
@@ -60,7 +62,8 @@ class Medicine {
       invoice: json['invoice'], // Аналогично обрабатываем invoices
     );
   }
-
+//Асинхронный статический метод, который загружает данные о лекарствах из файла medicine.json, декодирует их и создает список объектов 
+//Medicine. Использует Future.wait для параллельной обработки каждого лекарства с помощью метода fromJsonAsync.
   static Future<List<Medicine>> loadMedicinesFromDatabase() async {
     try {
       final String response = await rootBundle.loadString('assets/medicine.json');

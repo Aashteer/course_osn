@@ -6,17 +6,18 @@ import 'package:flutter/material.dart';
 
 class MedicineDetailPage extends StatelessWidget {
   final Medicine medicine;
-
+//конструктор
   const MedicineDetailPage({super.key, required this.medicine});
 
+//Метод build создает интерфейс виджета
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar( //AppBar показывает название лекарства
         title: Text(medicine.name),
         backgroundColor: const Color.fromARGB(255, 143, 145, 233),
       ),
-      body: Padding(
+      body: Padding( //создает отступы вокруг содержимого
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
@@ -52,6 +53,7 @@ class MedicineDetailPage extends StatelessWidget {
               title: const Text('Цена'),
               subtitle: Text('₽ ${medicine.price.toStringAsFixed(2)}'),
             ),
+            //Поставщики
             const Divider(),
             const Text('Поставщики', style: TextStyle(fontWeight: FontWeight.bold)),
             ...medicine.suppliers.map(
@@ -60,7 +62,7 @@ class MedicineDetailPage extends StatelessWidget {
                 subtitle: Text('${supplier.phone}, ${supplier.address}'),
               ),
             ).toList(),
-            const Divider(),
+            const Divider(), //Приходные накладные
             const Text('Приходные накладные', style: TextStyle(fontWeight: FontWeight.bold)),
             FutureBuilder<Consignment>(
   future: Consignment.findByInvoiceNumber(medicine.invoice), 
@@ -88,7 +90,7 @@ class MedicineDetailPage extends StatelessWidget {
       ),
     );
   }
-
+//вычисляет общую сумму накладной
   double _calculateTotalInvoiceAmount(Invoice invoice) {
     return invoice.medicines.fold(0.0, (sum, shipment) {
       return sum + (shipment.quantity * shipment.price);

@@ -19,7 +19,7 @@ class Supplier extends JsonSerializable {
     required this.inn,
   });
   
-  // Метод для создания экземпляра Supplier из JSON
+  // Этот фабричный метод создает экземпляр Supplier из JSON-объекта
   factory Supplier.fromJson(Map<String, dynamic> json) {
     return Supplier(
       name: json['name'],
@@ -31,7 +31,7 @@ class Supplier extends JsonSerializable {
     );
   }
   
-   // Метод для преобразования объекта Supplier в JSON
+   // Этот метод преобразует объект Supplier обратно в JSON-формат
   Map<String, dynamic> toJson() {
     return {
       'name': name,

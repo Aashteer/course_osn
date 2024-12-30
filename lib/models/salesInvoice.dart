@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:course_osn/models/customer.dart';
 import 'package:course_osn/models/invoice.dart';
+import 'package:course_osn/models/medicineshipment.dart';
 import 'package:flutter/services.dart';
 
 
@@ -28,7 +29,7 @@ class SalesInvoice {
     });
   }
 
-  // Метод для создания экземпляра SalesInvoice из JSON
+  //Этот фабричный метод создает экземпляр SalesInvoice из JSON-объекта
   factory SalesInvoice.fromJson(Map<String, dynamic> json) {
     var medicinesJson = json['medicines'] as List;
     List<MedicineShipment> medicinesList = medicinesJson

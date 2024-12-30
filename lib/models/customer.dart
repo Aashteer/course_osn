@@ -14,7 +14,7 @@ class Customer {
     required this.inn,
   });
 
-  // Метод для создания экземпляра Customer из JSON
+  // Этот фабричный метод создает экземпляр Customer из JSON-объекта
   factory Customer.fromJson(Map<String, dynamic> json) {
     return Customer(
       name: json['name'],
@@ -24,7 +24,7 @@ class Customer {
     );
   }
   
-// Метод для преобразования объекта Customer в JSON
+// Этот метод преобразует объект Customer обратно в JSON-формат
   Map<String, dynamic> toJson() {
     return {
       'name': name,

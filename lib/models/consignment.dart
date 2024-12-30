@@ -15,7 +15,7 @@ class Consignment{
     required this.date,
     required this.medicineList, Customer? customer, Supplier? supplier, Medicine? medicine, required List<Customer> customers, required List<Supplier> suppliers
   });
-
+//Этот метод преобразует объект Consignment обратно в JSON-формат
   Map<String, dynamic> toJson() {
     return {
       'number': number,
@@ -23,7 +23,7 @@ class Consignment{
       'medicineList': medicineList,
     };
   }
-
+//Этот фабричный метод создает экземпляр Consignment из JSON-объекта
   factory Consignment.fromJson(Map<String, dynamic> json) {
   return Consignment(
     number: json['number'] ?? 'Не указано',
@@ -32,7 +32,9 @@ class Consignment{
   );
 }
 
-
+//Статический асинхронный метод, который ищет накладную по номеру счета (invoice number). Он загружает все накладные из базы данных (через метод loadInvoicesFromDatabase) и 
+//ищет среди них накладную с указанным номером. Если находит, возвращает соответствующий экземпляр
+// Consignment. Если не находит, возвращает пустой экземпляр с установленными значениями по умолчанию.
   static Future<Consignment> findByInvoiceNumber(String invoiceNumber) async {
   List<Consignment> invoices = await loadInvoicesFromDatabase();
 

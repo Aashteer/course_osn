@@ -1,28 +1,24 @@
+import 'package:course_osn/models/medicine.dart';
+
 class MedicineShipment {
-  String medicineName;  // Название лекарства
-  int quantity;         // Количество лекарства
-  double price;         // Цена за единицу лекарства
+  Medicine medicine; // Лекарство
+  int quantity; // Количество поступившего лекарства
+  double price; // Цена лекарства
 
   MedicineShipment({
-    required this.medicineName,
+    required this.medicine,
     required this.quantity,
-    required this.price,
+    required this.price, required String medicineName,
   });
 
-  // Метод для создания экземпляра MedicineShipment из JSON
+  // Способ создания экземпляра счета-фактуры из JSON
   factory MedicineShipment.fromJson(Map<String, dynamic> json) {
     return MedicineShipment(
-      medicineName: json['medicineName'],
+      price: json['price'],
       quantity: json['quantity'],
-      price: json['price'].toDouble(),
+      medicine: (json['medicine'])
+          .map((medicineShipmentJson) => MedicineShipment.fromJson(medicineShipmentJson))
+          .toList(), medicineName: '',
     );
   }
-  Map<String, dynamic> toJson() {
-    return {
-      'medicineName': medicineName,
-      'quantity': quantity,
-      'price': price,
-    };
-  }
 }
-
